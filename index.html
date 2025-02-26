@@ -3,148 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lindsay's Adyen Checkout</title>
+    <title>Adyen Checkout</title>
 
     <!-- Load Adyen Checkout SDK -->
     <script src="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/5.38.0/adyen.js"></script>
     <link rel="stylesheet" href="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/5.38.0/adyen.css">
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            text-align: center;
-            padding: 20px;
-        }
-        h1 {
-            color: #333;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            max-width: 400px;
-            margin: auto;
-        }
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 10px;
-        }
-        select, input {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        button {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            width: 100%;
-            margin-top: 10px;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        #adyen-checkout {
-            margin-top: 20px;
-        }
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; padding: 20px; }
+        h1 { color: #333; }
+        .container { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); max-width: 400px; margin: auto; }
+        select, input, button { width: 100%; padding: 10px; margin: 5px 0; border-radius: 5px; font-size: 16px; }
+        button { background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
     </style>
 </head>
 <body>
     <h1>Adyen Checkout</h1>
-
     <div class="container">
         <label for="country">Select Country:</label>
         <select id="country">
             <option value="US">United States</option>
-            <option value="GB">United Kingdom</option>
-            <option value="DE">Germany</option>
-            <option value="FR">France</option>
-            <option value="NL">Netherlands</option>
-            <option value="AU">Australia</option>
-            <option value="CA">Canada</option>
-            <option value="JP">Japan</option>
-            <option value="IN">India</option>
-            <option value="MX">Mexico</option>
-            <option value="CN">China</option>  <!-- 🔹 Added China -->
+            <option value="CN">China</option>
         </select>
-
         <label for="currency">Select Currency:</label>
         <select id="currency">
             <option value="USD">USD - US Dollar</option>
-            <option value="EUR">EUR - Euro</option>
-            <option value="GBP">GBP - British Pound</option>
-            <option value="CAD">CAD - Canadian Dollar</option>
-            <option value="AUD">AUD - Australian Dollar</option>
-            <option value="JPY">JPY - Japanese Yen</option>
-            <option value="CHF">CHF - Swiss Franc</option>
-            <option value="CNY">CNY - Chinese Yuan</option>  <!-- 🔹 Added CNY -->
-            <option value="INR">INR - Indian Rupee</option>
-            <option value="MXN">MXN - Mexican Peso</option>
+            <option value="CNY">CNY - Chinese Yuan</option>
         </select>
-
         <label for="amount">Amount (in cents):</label>
         <input type="number" id="amount" value="1000" min="100" />
-
         <button onclick="startCheckout()">Start Checkout</button>
     </div>
-
     <div id="adyen-checkout"></div>
-
     <script>
         async function startCheckout() {
-            try {
-                // Get values from inputs
-                const country = document.getElementById("country").value;
-                const currency = document.getElementById("currency").value;
-                const amount = document.getElementById("amount").value;
-
-                // Send user-selected details to backend
-                const sessionRequestData = {
-                    amount: { currency: currency, value: parseInt(amount) },
-                    countryCode: country,
-                    shopperLocale: country === "CN" ? "zh_CN" : country + "_" + currency  // 🔹 Uses "zh_CN" for China
-                };
-
-                // Fetch session and available payment methods
-                const sessionResponse = await fetch("https://3000-lindsaysyso-adyenchecko-nsk61x2grvk.ws-us118.gitpod.io/createSession", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(sessionRequestData)
-                });
-
-                if (!sessionResponse.ok) {
-                    throw new Error("Failed to fetch session from backend");
-                }
-
-                const { sessionData, paymentMethods } = await sessionResponse.json();
-
-                // Initialize Adyen Checkout
-                const checkout = await AdyenCheckout({
-                    environment: "test",
-                    clientKey: "test_AT7N3MUO2FGRRB7BEPCYQSGV7IS7OFUO",  // 🔹 Replace with your actual Client Key
-                    session: sessionData,
-                    paymentMethodsResponse: paymentMethods
-                });
-
-                // Mount the Drop-in
-                checkout.create("dropin").mount("#adyen-checkout");
-
-            } catch (error) {
-                console.error("Error initializing checkout:", error);
-            }
+            const response = await fetch("https://your-gitpod-url/webhooks", { method: "POST" });
+            const { sessionData, paymentMethods } = await response.json();
+            const checkout = await AdyenCheckout({ environment: "test", clientKey: "test_AT7N3MUO2FGRRB7BEPCYQSGV7IS7OFUO", session: sessionData, paymentMethodsResponse: paymentMethods });
+            checkout.create("dropin").mount("#adyen-checkout");
         }
+        startCheckout();
     </script>
 </body>
 </html>
-
-
