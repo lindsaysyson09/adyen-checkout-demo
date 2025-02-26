@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adyen Checkout</title>
+    <title>Lindsay's Adyen Checkout</title>
 
     <!-- Load Adyen Checkout SDK -->
     <script src="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/5.38.0/adyen.js"></script>
@@ -63,6 +63,21 @@
     <h1>Adyen Checkout</h1>
 
     <div class="container">
+        <label for="country">Select Country:</label>
+        <select id="country">
+            <option value="US">United States</option>
+            <option value="GB">United Kingdom</option>
+            <option value="DE">Germany</option>
+            <option value="FR">France</option>
+            <option value="NL">Netherlands</option>
+            <option value="AU">Australia</option>
+            <option value="CA">Canada</option>
+            <option value="JP">Japan</option>
+            <option value="IN">India</option>
+            <option value="MX">Mexico</option>
+            <option value="CN">China</option>  <!-- 🔹 Added China -->
+        </select>
+
         <label for="currency">Select Currency:</label>
         <select id="currency">
             <option value="USD">USD - US Dollar</option>
@@ -72,7 +87,7 @@
             <option value="AUD">AUD - Australian Dollar</option>
             <option value="JPY">JPY - Japanese Yen</option>
             <option value="CHF">CHF - Swiss Franc</option>
-            <option value="CNY">CNY - Chinese Yuan</option>
+            <option value="CNY">CNY - Chinese Yuan</option>  <!-- 🔹 Added CNY -->
             <option value="INR">INR - Indian Rupee</option>
             <option value="MXN">MXN - Mexican Peso</option>
         </select>
@@ -89,14 +104,15 @@
         async function startCheckout() {
             try {
                 // Get values from inputs
+                const country = document.getElementById("country").value;
                 const currency = document.getElementById("currency").value;
                 const amount = document.getElementById("amount").value;
 
                 // Send user-selected details to backend
                 const sessionRequestData = {
                     amount: { currency: currency, value: parseInt(amount) },
-                    countryCode: "US",
-                    shopperLocale: "en_US"
+                    countryCode: country,
+                    shopperLocale: country === "CN" ? "zh_CN" : country + "_" + currency  // 🔹 Uses "zh_CN" for China
                 };
 
                 // Fetch session and available payment methods
@@ -130,3 +146,5 @@
     </script>
 </body>
 </html>
+
+
