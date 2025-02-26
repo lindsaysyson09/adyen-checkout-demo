@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adyen Checkout</title>
-    <script src="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/6.5.1/adyen.js"></script>
-    <link rel="stylesheet" href="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/6.5.1/adyen.css">
+
+    <!-- Load Adyen Checkout SDK -->
+    <script src="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/5.38.0/adyen.js"></script>
+    <link rel="stylesheet" href="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/5.38.0/adyen.css">
 </head>
 <body>
     <h1>Adyen Checkout</h1>
@@ -13,27 +15,32 @@
 
     <script>
         async function startCheckout() {
-            const sessionResponse = await fetch("https://3000-lindsaysyso-adyenchecko-nsk61x2grvk.ws-us118.gitpod.io/createSession", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" }
-            }).then(res => res.json());
+            try {
+                // Fetch session from backend
+                const sessionResponse = await fetch("https://3000-lindsaysyso-adyenchecko-nsk61x2grvk.ws-us118.gitpod.io/createSession", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" }
+                });
 
-            const checkout = await AdyenCheckout({
-                environment: "test",
-                clientKey: "test_AT7N3MUO2FGRRB7BEPCYQSGV7IS7OFUO",
-                session: {
-                    id: sessionResponse.id,
-                    sessionData: sessionResponse.sessionData
-                },
-                onPaymentCompleted: (result) => {
-                    alert("Payment completed: " + result.resultCode);
-                },
-                onError: (error) => {
-                    console.error(error);
+                if (!sessionResponse.ok) {
+                    throw new Error("Failed to fetch session from backend");
                 }
-            });
 
-            checkout.create("dropin").mount("#adyen-checkout");
+                const sessionData = await sessionResponse.json();
+
+                // Initialize Adyen Checkout
+                const checkout = await AdyenCheckout({
+                    environment: "test",
+                    clientKey: "test_AT7N3MUO2FGRRB7BEPCYQSGV7IS7OFUO",  // 🔹 Replace with your actual Client Key
+                    session: sessionData
+                });
+
+                // Mount the Drop-in
+                checkout.create("dropin").mount("#adyen-checkout");
+
+            } catch (error) {
+                console.error("Error initializing checkout:", error);
+            }
         }
 
         startCheckout();
