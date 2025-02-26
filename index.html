@@ -8,21 +8,80 @@
     <!-- Load Adyen Checkout SDK -->
     <script src="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/5.38.0/adyen.js"></script>
     <link rel="stylesheet" href="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/5.38.0/adyen.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            margin: auto;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        select, input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #adyen-checkout {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <h1>Adyen Checkout</h1>
 
-    <label for="currency">Currency:</label>
-    <select id="currency">
-        <option value="USD">USD ($)</option>
-        <option value="EUR">EUR (€)</option>
-        <option value="GBP">GBP (£)</option>
-    </select>
+    <div class="container">
+        <label for="currency">Select Currency:</label>
+        <select id="currency">
+            <option value="USD">USD - US Dollar</option>
+            <option value="EUR">EUR - Euro</option>
+            <option value="GBP">GBP - British Pound</option>
+            <option value="CAD">CAD - Canadian Dollar</option>
+            <option value="AUD">AUD - Australian Dollar</option>
+            <option value="JPY">JPY - Japanese Yen</option>
+            <option value="CHF">CHF - Swiss Franc</option>
+            <option value="CNY">CNY - Chinese Yuan</option>
+            <option value="INR">INR - Indian Rupee</option>
+            <option value="MXN">MXN - Mexican Peso</option>
+        </select>
 
-    <label for="amount">Amount (cents):</label>
-    <input type="number" id="amount" value="1000" />
+        <label for="amount">Amount (in cents):</label>
+        <input type="number" id="amount" value="1000" min="100" />
 
-    <button onclick="startCheckout()">Start Checkout</button>
+        <button onclick="startCheckout()">Start Checkout</button>
+    </div>
 
     <div id="adyen-checkout"></div>
 
