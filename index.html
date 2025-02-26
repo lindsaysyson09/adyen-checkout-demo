@@ -1,1 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adyen Checkout Demo</title>
+    <script src="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/6.5.1/adyen.js"></script>
+    <link rel="stylesheet" href="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/6.5.1/adyen.css">
+</head>
+<body>
+    <h1>Adyen Checkout</h1>
+    <div id="adyen-checkout"></div>
+
+    <script>
+        async function startCheckout() {
+            const sessionResponse = await fetch("https://3000-lindsaysyso-adyenchecko-0m8r1erhoh4.ws-us118.gitpod.io/createSession", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" }
+            }).then(res => res.json());
+
+            const checkout = await AdyenCheckout({
+                environment: "test",
+                clientKey: "AQErhmfxJ4/IaBdGw0m/n3Q5qf3VZIJDCYB+XXZCuaYuuSQ73d88X1vme0oCoRDBXVsNvuR83LVYjEgiTGAH-LxF7xleD0zW83hne7NmroPcNdkxOoSpi0XwcEwO+4t0=-i1i+:^5aLMU,eLsajZd",
+                session: {
+                    id: sessionResponse.id,
+                    sessionData: sessionResponse.sessionData
+                },
+                onPaymentCompleted: (result) => {
+                    alert("Payment completed: " + result.resultCode);
+                },
+                onError: (error) => {
+                    console.error(error);
+                }
+            });
+
+            checkout.create("dropin").mount("#adyen-checkout");
+        }
+
+        startCheckout();
+    </script>
+</body>
+</html>
 
