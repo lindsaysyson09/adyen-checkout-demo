@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adyen Checkout Demo</title>
+    <title>Adyen Checkout</title>
     <script src="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/6.5.1/adyen.js"></script>
     <link rel="stylesheet" href="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/6.5.1/adyen.css">
 </head>
@@ -13,7 +13,7 @@
 
     <script>
         async function startCheckout() {
-            const sessionResponse = await fetch("https://3000-lindsaysyso-adyenchecko-0m8r1erhoh4.ws-us118.gitpod.io/createSession", {
+            const sessionResponse = await fetch("https://3000-lindsaysyso-adyenchecko-rh1qvrc560j.ws-us118.gitpod.io//createSession", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" }
             }).then(res => res.json());
@@ -40,4 +40,3 @@
     </script>
 </body>
 </html>
-
