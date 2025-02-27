@@ -47,13 +47,12 @@
                 })
             });
 
-            const { sessionData, paymentMethods } = await response.json();
+            const sessionData = await response.json();
 
             const checkout = await AdyenCheckout({
                 environment: "test",
                 clientKey: "test_AT7N3MUO2FGRRB7BEPCYQSGV7IS7OFUO",
-                session: sessionData,
-                paymentMethodsResponse: paymentMethods
+                session: sessionData
             });
 
             checkout.create("dropin").mount("#adyen-checkout");
