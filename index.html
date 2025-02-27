@@ -42,8 +42,6 @@
 </head>
 <body>
     <h2>Lindsay's Test Adyen Checkout</h2>
-    <img src="https://cdn.pixabay.com/photo/2017/01/31/17/52/cat-2023389_1280.png" alt="Cute Cat" class="cat-graphic">
-    
     <label for="country">Select Country:</label>
     <select id="country">
         <option value="US">United States</option>
@@ -51,6 +49,11 @@
         <option value="GB">United Kingdom</option>
         <option value="JP">Japan</option>
         <option value="IN">India</option>
+        <option value="DE">Germany</option>
+        <option value="FR">France</option>
+        <option value="CA">Canada</option>
+        <option value="AU">Australia</option>
+        <option value="BR">Brazil</option>
     </select>
     
     <label for="currency">Select Currency:</label>
@@ -60,6 +63,11 @@
         <option value="GBP">GBP - British Pound</option>
         <option value="JPY">JPY - Japanese Yen</option>
         <option value="INR">INR - Indian Rupee</option>
+        <option value="EUR">EUR - Euro</option>
+        <option value="CAD">CAD - Canadian Dollar</option>
+        <option value="AUD">AUD - Australian Dollar</option>
+        <option value="BRL">BRL - Brazilian Real</option>
+        <option value="CHF">CHF - Swiss Franc</option>
     </select>
     
     <button onclick="startCheckout()">Start Payment</button>
@@ -111,11 +119,6 @@
                 console.error("Error loading checkout:", error);
                 alert("Failed to load checkout. Please check console for details.");
             }
-        }
-    </script>
-</body>
-</html>
-
         }
     </script>
 </body>
